@@ -47,6 +47,9 @@ typedef enum _sai_port_type_t
     /** Fabric Port */
     SAI_PORT_TYPE_FABRIC,
 
+    /** Recycle Port */
+    SAI_PORT_TYPE_RECYCLE,
+
 } sai_port_type_t;
 
 /**
@@ -109,6 +112,7 @@ typedef enum _sai_port_flow_control_mode_t
 
 /**
  * @brief Attribute data for #SAI_PORT_ATTR_INTERNAL_LOOPBACK_MODE
+ * To be deprecated, use sai_port_loopback_mode_t instead.
  */
 typedef enum _sai_port_internal_loopback_mode_t
 {
@@ -122,6 +126,24 @@ typedef enum _sai_port_internal_loopback_mode_t
     SAI_PORT_INTERNAL_LOOPBACK_MODE_MAC
 
 } sai_port_internal_loopback_mode_t;
+
+/**
+ * @brief Attribute data for #SAI_PORT_ATTR_LOOPBACK_MODE
+ */
+typedef enum _sai_port_loopback_mode_t
+{
+    /** Disable loopback */
+    SAI_PORT_LOOPBACK_MODE_NONE,
+
+    /** Port loopback at PHY module */
+    SAI_PORT_LOOPBACK_MODE_PHY,
+
+    /** Port loopback at MAC module */
+    SAI_PORT_LOOPBACK_MODE_MAC,
+
+    /** Port loopback at PHY remote end */
+    SAI_PORT_LOOPBACK_MODE_PHY_REMOTE
+} sai_port_loopback_mode_t;
 
 /**
  * @brief Attribute data for #SAI_PORT_ATTR_MEDIA_TYPE
@@ -171,12 +193,33 @@ typedef enum _sai_port_fec_mode_t
     /** No FEC */
     SAI_PORT_FEC_MODE_NONE,
 
-    /** Enable RS-FEC - 25G, 50G, 100G ports */
+    /** Enable RS-FEC - 25G, 50G, 100G ports. The specific RS-FEC mode will be automatically determined. */
     SAI_PORT_FEC_MODE_RS,
 
     /** Enable FC-FEC - 10G, 25G, 40G, 50G ports */
     SAI_PORT_FEC_MODE_FC,
 } sai_port_fec_mode_t;
+
+/**
+ * @brief Attribute data for #SAI_PORT_ATTR_FEC_MODE_EXTENDED
+ */
+typedef enum _sai_port_fec_mode_extended_t
+{
+    /** No FEC */
+    SAI_PORT_FEC_MODE_EXTENDED_NONE,
+
+    /** Enable RS-528 FEC (CL91) - 25G, 50G, 100G ports */
+    SAI_PORT_FEC_MODE_EXTENDED_RS528,
+
+    /** Enable RS544-FEC - 100G PAM4, 200G ports */
+    SAI_PORT_FEC_MODE_EXTENDED_RS544,
+
+    /** Enable RS544-FEC (interleaved) - 100G, 200G, 400G ports */
+    SAI_PORT_FEC_MODE_EXTENDED_RS544_INTERLEAVED,
+
+    /** Enable FC-FEC (CL74) - 10G, 25G, 40G, 50G ports */
+    SAI_PORT_FEC_MODE_EXTENDED_FC,
+} sai_port_fec_mode_extended_t;
 
 /**
  * @brief Priority flow control mode
@@ -258,6 +301,21 @@ typedef enum _sai_port_interface_type_t
     /** Interface type XLAUI */
     SAI_PORT_INTERFACE_TYPE_XLAUI,
 
+    /** Interface type KR2 */
+    SAI_PORT_INTERFACE_TYPE_KR2,
+
+    /** Interface type CAUI */
+    SAI_PORT_INTERFACE_TYPE_CAUI4,
+
+    /** Interface type XAUI */
+    SAI_PORT_INTERFACE_TYPE_XAUI,
+
+    /** Interface type XFI */
+    SAI_PORT_INTERFACE_TYPE_XFI,
+
+    /** Interface type XGMII */
+    SAI_PORT_INTERFACE_TYPE_XGMII,
+
     /** Interface type MAX */
     SAI_PORT_INTERFACE_TYPE_MAX,
 
@@ -313,6 +371,108 @@ typedef enum _sai_port_prbs_config_t
     /** Enable PRBS Transmitter */
     SAI_PORT_PRBS_CONFIG_ENABLE_TX
 } sai_port_prbs_config_t;
+
+/**
+ * @brief Attribute data for #SAI_PORT_CONNECTOR_ATTR_FAILOVER_MODE
+ * Used for Failover mode configuration on port
+ */
+typedef enum _sai_port_connector_failover_mode_t
+{
+    /** Failover mode disable */
+    SAI_PORT_CONNECTOR_FAILOVER_MODE_DISABLE,
+
+    /** Configure Failover mode on primary port */
+    SAI_PORT_CONNECTOR_FAILOVER_MODE_PRIMARY,
+
+    /** Configure Failover mode on secondary port */
+    SAI_PORT_CONNECTOR_FAILOVER_MODE_SECONDARY
+} sai_port_connector_failover_mode_t;
+
+/**
+ * @brief Attribute data for #SAI_PORT_ATTR_MDIX_MODE_STATUS
+ * Used for MDIX mode status
+ */
+typedef enum _sai_port_mdix_mode_status_t
+{
+    /** MDIX mode status straight */
+    SAI_PORT_MDIX_MODE_STATUS_STRAIGHT,
+
+    /**  MDIX mode status cross over */
+    SAI_PORT_MDIX_MODE_STATUS_CROSSOVER
+} sai_port_mdix_mode_status_t;
+
+/**
+ * @brief Attribute data for #SAI_PORT_ATTR_MDIX_MODE_CONFIG
+ * Used for MDIX mode configuration
+ */
+typedef enum _sai_port_mdix_mode_config_t
+{
+    /** MDIX mode status auto */
+    SAI_PORT_MDIX_MODE_CONFIG_AUTO,
+
+    /** MDIX mode status straight */
+    SAI_PORT_MDIX_MODE_CONFIG_STRAIGHT,
+
+    /**  MDIX mode status cross over */
+    SAI_PORT_MDIX_MODE_CONFIG_CROSSOVER
+} sai_port_mdix_mode_config_t;
+
+/**
+ * @brief Attribute data for #SAI_PORT_ATTR_AUTO_NEG_CONFIG_MODE
+ * Used for auto negotiation mode to configure master or slave mode
+ */
+typedef enum _sai_port_auto_neg_config_mode_t
+{
+    /** Auto neg configuration mode disabled */
+    SAI_PORT_AUTO_NEG_CONFIG_MODE_DISABLED,
+
+    /** Auto neg mode auto */
+    SAI_PORT_AUTO_NEG_CONFIG_MODE_AUTO,
+
+    /** Auto neg mode slave */
+    SAI_PORT_AUTO_NEG_CONFIG_MODE_SLAVE,
+
+    /** Auto neg mode master */
+    SAI_PORT_AUTO_NEG_CONFIG_MODE_MASTER
+} sai_port_auto_neg_config_mode_t;
+
+/**
+ * @brief Attribute data for #SAI_PORT_ATTR_MODULE_TYPE
+ * Used for configuring Fiber module type
+ */
+typedef enum _sai_port_module_type_t
+{
+    /** Module Type Fiber */
+    SAI_PORT_MODULE_TYPE_1000BASE_X,
+
+    /** Module Type 100FX */
+    SAI_PORT_MODULE_TYPE_100FX,
+
+    /** Module Type SGMII-Slave */
+    SAI_PORT_MODULE_TYPE_SGMII_SLAVE,
+} sai_port_module_type_t;
+
+/**
+ * @brief Attribute data for #SAI_PORT_ATTR_DUAL_MEDIA
+ * Used to configure media type for dual media supported PHY
+ */
+typedef enum _sai_port_dual_media_t
+{
+    /**  Dual media not supported */
+    SAI_PORT_DUAL_MEDIA_NONE,
+
+    /**  Force Copper mode, Fiber is inactive/disabled */
+    SAI_PORT_DUAL_MEDIA_COPPER_ONLY,
+
+    /**  Force Fiber mode, Copper is inactive/disabled */
+    SAI_PORT_DUAL_MEDIA_FIBER_ONLY,
+
+    /**  Both Copper and Fiber supported, but Copper preferred */
+    SAI_PORT_DUAL_MEDIA_COPPER_PREFERRED,
+
+    /**  Both Copper and Fiber supported, but Fiber preferred */
+    SAI_PORT_DUAL_MEDIA_FIBER_PREFERRED
+} sai_port_dual_media_t;
 
 /**
  * @brief Attribute Id in sai_set_port_attribute() and
@@ -394,6 +554,20 @@ typedef enum _sai_port_attr_t
     SAI_PORT_ATTR_QOS_SCHEDULER_GROUP_LIST,
 
     /**
+     * @brief The sum of the headroom size of the ingress priority groups belonging to this port
+     *        should not exceed the SAI_PORT_ATTR_QOS_MAXIMUM_HEADROOM_SIZE value.
+     *
+     * This attribute is applicable only for per-port, per-PG headroom model
+     * (which means SAI_BUFFER_POOL_ATTR_XOFF_SIZE is zero)
+     *
+     * For the platforms which don't have this limitation, 0 should be returned.
+     *
+     * @type sai_uint32_t
+     * @flags READ_ONLY
+     */
+    SAI_PORT_ATTR_QOS_MAXIMUM_HEADROOM_SIZE,
+
+    /**
      * @brief Query list of supported port speed(full-duplex) in Mbps
      *
      * @type sai_u32_list_t
@@ -408,6 +582,14 @@ typedef enum _sai_port_attr_t
      * @flags READ_ONLY
      */
     SAI_PORT_ATTR_SUPPORTED_FEC_MODE,
+
+    /**
+     * @brief Query extended list of supported port FEC modes
+     *
+     * @type sai_s32_list_t sai_port_fec_mode_extended_t
+     * @flags READ_ONLY
+     */
+    SAI_PORT_ATTR_SUPPORTED_FEC_MODE_EXTENDED,
 
     /**
      * @brief Query list of Supported HALF-Duplex speed in Mbps
@@ -464,6 +646,14 @@ typedef enum _sai_port_attr_t
      * @flags READ_ONLY
      */
     SAI_PORT_ATTR_REMOTE_ADVERTISED_FEC_MODE,
+
+    /**
+     * @brief Query extended list of Advertised remote port FEC control
+     *
+     * @type sai_s32_list_t sai_port_fec_mode_extended_t
+     * @flags READ_ONLY
+     */
+    SAI_PORT_ATTR_REMOTE_ADVERTISED_FEC_MODE_EXTENDED,
 
     /**
      * @brief Query list of Remote Port's Advertised HALF-Duplex speed in Mbps
@@ -608,6 +798,8 @@ typedef enum _sai_port_attr_t
     /**
      * @brief Query/Configure list of Advertised port speed (Full-Duplex) in Mbps
      *
+     * Used when auto negotiation is on. Empty list means all supported values are enabled.
+     *
      * @type sai_u32_list_t
      * @flags CREATE_AND_SET
      * @default empty
@@ -620,8 +812,19 @@ typedef enum _sai_port_attr_t
      * @type sai_s32_list_t sai_port_fec_mode_t
      * @flags CREATE_AND_SET
      * @default empty
+     * @validonly SAI_PORT_ATTR_USE_EXTENDED_FEC == false
      */
     SAI_PORT_ATTR_ADVERTISED_FEC_MODE,
+
+    /**
+     * @brief Query/Configure extended list of Advertised port FEC Mode
+     *
+     * @type sai_s32_list_t sai_port_fec_mode_extended_t
+     * @flags CREATE_AND_SET
+     * @default empty
+     * @validonly SAI_PORT_ATTR_USE_EXTENDED_FEC == true
+     */
+    SAI_PORT_ATTR_ADVERTISED_FEC_MODE_EXTENDED,
 
     /**
      * @brief Query/Configure list of Advertised HALF-Duplex speed in Mbps
@@ -722,6 +925,7 @@ typedef enum _sai_port_attr_t
 
     /**
      * @brief Internal loopback control
+     * To be deprecated, use #SAI_PORT_ATTR_LOOPBACK_MODE
      *
      * @type sai_port_internal_loopback_mode_t
      * @flags CREATE_AND_SET
@@ -730,13 +934,36 @@ typedef enum _sai_port_attr_t
     SAI_PORT_ATTR_INTERNAL_LOOPBACK_MODE,
 
     /**
+     * @brief Forward Error Correction (FEC) extended control
+     *
+     * Enables use of extended FEC controls as opposed to their non-extended
+     * counterparts.
+     *
+     * @type bool
+     * @flags CREATE_AND_SET
+     * @default false
+     */
+    SAI_PORT_ATTR_USE_EXTENDED_FEC,
+
+    /**
      * @brief Forward Error Correction (FEC) control
      *
      * @type sai_port_fec_mode_t
      * @flags CREATE_AND_SET
      * @default SAI_PORT_FEC_MODE_NONE
+     * @validonly SAI_PORT_ATTR_USE_EXTENDED_FEC == false
      */
     SAI_PORT_ATTR_FEC_MODE,
+
+    /**
+     * @brief Forward Error Correction (FEC) extended control
+     *
+     * @type sai_port_fec_mode_extended_t
+     * @flags CREATE_AND_SET
+     * @default SAI_PORT_FEC_MODE_EXTENDED_NONE
+     * @validonly SAI_PORT_ATTR_USE_EXTENDED_FEC == true
+     */
+    SAI_PORT_ATTR_FEC_MODE_EXTENDED,
 
     /**
      * @brief Update DSCP of outgoing packets
@@ -1407,6 +1634,17 @@ typedef enum _sai_port_attr_t
     SAI_PORT_ATTR_INTERFACE_TYPE,
 
     /**
+     * @brief Configure advertised interface type list
+     *
+     * Used when auto negotiation is on. Empty list means all supported values are enabled.
+     *
+     * @type sai_s32_list_t sai_port_interface_type_t
+     * @flags CREATE_AND_SET
+     * @default empty
+     */
+    SAI_PORT_ATTR_ADVERTISED_INTERFACE_TYPE,
+
+    /**
      * @brief Configure port reference clock in hertz
      *
      * @type sai_uint64_t
@@ -1482,6 +1720,24 @@ typedef enum _sai_port_attr_t
     SAI_PORT_ATTR_PRBS_LOCK_LOSS_STATUS,
 
     /**
+     * @brief Attribute data for #SAI_PORT_ATTR_PRBS_RX_STATUS
+     *
+     * @type sai_port_prbs_rx_status_t
+     * @flags READ_ONLY
+     */
+    SAI_PORT_ATTR_PRBS_RX_STATUS,
+
+    /**
+     * @brief Attribute data for #SAI_PORT_ATTR_PRBS_RX_STATE
+     * Used for clear on read status/count register.
+     * Adapter should return SAI_STATUS_NOT_SUPPORTED if not supported.
+     *
+     * @type sai_prbs_rx_state_t
+     * @flags READ_ONLY
+     */
+    SAI_PORT_ATTR_PRBS_RX_STATE,
+
+    /**
      * @brief Attribute data for #SAI_PORT_ATTR_AUTO_NEG_STATUS
      *
      * Auto negotiation (AN) done state: 0 for AN in progress, 0 for AN done
@@ -1498,7 +1754,7 @@ typedef enum _sai_port_attr_t
      * @flags CREATE_AND_SET
      * @default false
      */
-    SAI_PORT_ATTR_DECREMENT_TTL,
+    SAI_PORT_ATTR_DISABLE_DECREMENT_TTL,
 
     /**
      * @brief Enable EXP -> TC MAP on port
@@ -1621,6 +1877,83 @@ typedef enum _sai_port_attr_t
      * @objects SAI_OBJECT_TYPE_SYSTEM_PORT
      */
     SAI_PORT_ATTR_SYSTEM_PORT,
+
+    /**
+     * @brief FEC mode auto-negotiation override status
+     *
+     * If set to true, any auto-negotiated FEC mode will be
+     * overridden by the value configured in SAI_PORT_ATTR_FEC_MODE
+     *
+     * @type bool
+     * @flags CREATE_AND_SET
+     * @default false
+     */
+    SAI_PORT_ATTR_AUTO_NEG_FEC_MODE_OVERRIDE,
+
+    /**
+     * @brief Internal or External loopback control
+     *
+     * @type sai_port_loopback_mode_t
+     * @flags CREATE_AND_SET
+     * @default SAI_PORT_LOOPBACK_MODE_NONE
+     */
+    SAI_PORT_ATTR_LOOPBACK_MODE,
+
+    /**
+     * @brief MDIX mode status for the port
+     *
+     * @type sai_port_mdix_mode_status_t
+     * @flags READ_ONLY
+     */
+    SAI_PORT_ATTR_MDIX_MODE_STATUS,
+
+    /**
+     * @brief MDIX mode configuration for the port
+     *
+     * @type sai_port_mdix_mode_config_t
+     * @flags CREATE_AND_SET
+     * @default SAI_PORT_MDIX_MODE_CONFIG_AUTO
+     */
+    SAI_PORT_ATTR_MDIX_MODE_CONFIG,
+
+    /**
+     * @brief Configure auto negotiation configuration mode for the port
+     *
+     * @type sai_port_auto_neg_config_mode_t
+     * @flags CREATE_AND_SET
+     * @default SAI_PORT_AUTO_NEG_CONFIG_MODE_DISABLED
+     * @validonly SAI_PORT_ATTR_AUTO_NEG_MODE == true
+     */
+    SAI_PORT_ATTR_AUTO_NEG_CONFIG_MODE,
+
+    /**
+     * @brief Enable auto detection between 1000X and SGMII slave mode
+     *
+     * @type bool
+     * @flags CREATE_AND_SET
+     * @default false
+     * @validonly SAI_PORT_ATTR_MEDIA_TYPE == SAI_PORT_MEDIA_TYPE_FIBER and SAI_PORT_ATTR_SPEED == 1000
+     */
+    SAI_PORT_ATTR_1000X_SGMII_SLAVE_AUTODETECT,
+
+    /**
+     * @brief Configure Fiber module type
+     *
+     * @type sai_port_module_type_t
+     * @flags CREATE_AND_SET
+     * @default SAI_PORT_MODULE_TYPE_1000BASE_X
+     * @validonly SAI_PORT_ATTR_MEDIA_TYPE == SAI_PORT_MEDIA_TYPE_FIBER and SAI_PORT_ATTR_SPEED == 1000
+     */
+    SAI_PORT_ATTR_MODULE_TYPE,
+
+    /**
+     * @brief Configure media types for dual media supported PHY
+     *
+     * @type sai_port_dual_media_t
+     * @flags CREATE_AND_SET
+     * @default SAI_PORT_DUAL_MEDIA_NONE
+     */
+    SAI_PORT_ATTR_DUAL_MEDIA,
 
     /**
      * @brief End of attributes
@@ -2053,6 +2386,62 @@ typedef enum _sai_port_stat_t
 
     /** SAI port stat PFC 7 tx duration */
     SAI_PORT_STAT_PFC_7_TX_PAUSE_DURATION,
+
+    /**
+     * @brief PFC pause duration for RX and TX per PFC priority in micro seconds [uint64_t]
+     *
+     * RX pause duration for certain priority is a the duration in micro seconds converted
+     * from quanta in ingress pause frame for that priority (a pause frame received by the
+     * switch).
+     * While TX pause duration for certain priority is the duration in micro seconds converted
+     * from quanta in egress pause frame for that priority (a pause frame sent by the switch).
+     */
+    SAI_PORT_STAT_PFC_0_RX_PAUSE_DURATION_US,
+
+    /** SAI port stat PFC 0 tx duration in micro seconds */
+    SAI_PORT_STAT_PFC_0_TX_PAUSE_DURATION_US,
+
+    /** SAI port stat PFC 1 rx duration in micro seconds */
+    SAI_PORT_STAT_PFC_1_RX_PAUSE_DURATION_US,
+
+    /** SAI port stat PFC 1 tx duration in micro seconds */
+    SAI_PORT_STAT_PFC_1_TX_PAUSE_DURATION_US,
+
+    /** SAI port stat PFC 2 rx duration in micro seconds */
+    SAI_PORT_STAT_PFC_2_RX_PAUSE_DURATION_US,
+
+    /** SAI port stat PFC 2 tx duration in micro seconds */
+    SAI_PORT_STAT_PFC_2_TX_PAUSE_DURATION_US,
+
+    /** SAI port stat PFC 3 rx duration in micro seconds */
+    SAI_PORT_STAT_PFC_3_RX_PAUSE_DURATION_US,
+
+    /** SAI port stat PFC 3 tx duration in micro seconds */
+    SAI_PORT_STAT_PFC_3_TX_PAUSE_DURATION_US,
+
+    /** SAI port stat PFC 4 rx duration in micro seconds */
+    SAI_PORT_STAT_PFC_4_RX_PAUSE_DURATION_US,
+
+    /** SAI port stat PFC 4 tx duration in micro seconds */
+    SAI_PORT_STAT_PFC_4_TX_PAUSE_DURATION_US,
+
+    /** SAI port stat PFC 5 rx duration in micro seconds */
+    SAI_PORT_STAT_PFC_5_RX_PAUSE_DURATION_US,
+
+    /** SAI port stat PFC 5 tx duration in micro seconds */
+    SAI_PORT_STAT_PFC_5_TX_PAUSE_DURATION_US,
+
+    /** SAI port stat PFC 6 rx duration in micro seconds */
+    SAI_PORT_STAT_PFC_6_RX_PAUSE_DURATION_US,
+
+    /** SAI port stat PFC 6 tx duration in micro seconds */
+    SAI_PORT_STAT_PFC_6_TX_PAUSE_DURATION_US,
+
+    /** SAI port stat PFC 7 rx duration in micro seconds */
+    SAI_PORT_STAT_PFC_7_RX_PAUSE_DURATION_US,
+
+    /** SAI port stat PFC 7 tx duration in micro seconds */
+    SAI_PORT_STAT_PFC_7_TX_PAUSE_DURATION_US,
 
     /** PFC based ON to OFF pause transitions counter per PFC priority [uint64_t] */
     SAI_PORT_STAT_PFC_0_ON2OFF_RX_PKTS,
@@ -2604,11 +2993,11 @@ typedef enum _sai_port_serdes_attr_t
     /**
      * @brief Port serdes control pre-emphasis
      *
-     * List of port serdes pre-emphasis values. The values are of type sai_u32_list_t
+     * List of port serdes pre-emphasis values. The values are of type sai_s32_list_t
      * where the count is number lanes in a port and the list specifies list of values
      * to be applied to each lane.
      *
-     * @type sai_u32_list_t
+     * @type sai_s32_list_t
      * @flags CREATE_ONLY
      * @default internal
      */
@@ -2617,11 +3006,11 @@ typedef enum _sai_port_serdes_attr_t
     /**
      * @brief Port serdes control idriver
      *
-     * List of port serdes idriver values. The values are of type sai_u32_list_t
+     * List of port serdes idriver values. The values are of type sai_s32_list_t
      * where the count is number lanes in a port and the list specifies list of values
      * to be applied to each lane.
      *
-     * @type sai_u32_list_t
+     * @type sai_s32_list_t
      * @flags CREATE_ONLY
      * @default internal
      */
@@ -2630,11 +3019,11 @@ typedef enum _sai_port_serdes_attr_t
     /**
      * @brief Port serdes control pre-emphasis
      *
-     * List of port serdes ipredriver values. The values are of type sai_u32_list_t
+     * List of port serdes ipredriver values. The values are of type sai_s32_list_t
      * where the count is number lanes in a port and the list specifies list of values
      * to be applied to each lane.
      *
-     * @type sai_u32_list_t
+     * @type sai_s32_list_t
      * @flags CREATE_ONLY
      * @default internal
      */
@@ -2644,10 +3033,10 @@ typedef enum _sai_port_serdes_attr_t
      * @brief Port serdes control TX FIR PRE1 filter
      *
      * List of port serdes TX fir precursor1 tap-filter values.
-     * The values are of type sai_u32_list_t where the count is number lanes in
+     * The values are of type sai_s32_list_t where the count is number lanes in
      * a port and the list specifies list of values to be applied to each lane.
      *
-     * @type sai_u32_list_t
+     * @type sai_s32_list_t
      * @flags CREATE_ONLY
      * @default internal
      */
@@ -2657,10 +3046,10 @@ typedef enum _sai_port_serdes_attr_t
      * @brief Port serdes control TX FIR PRE2 filter
      *
      * List of port serdes TX fir precursor2 tap-filter values.
-     * The values are of type sai_u32_list_t where the count is number lanes in
+     * The values are of type sai_s32_list_t where the count is number lanes in
      * a port and the list specifies list of values to be applied to each lane.
      *
-     * @type sai_u32_list_t
+     * @type sai_s32_list_t
      * @flags CREATE_ONLY
      * @default internal
      */
@@ -2670,10 +3059,10 @@ typedef enum _sai_port_serdes_attr_t
      * @brief Port serdes control TX FIR PRE3 filter
      *
      * List of port serdes TX fir precursor3 tap-filter values.
-     * The values are of type sai_u32_list_t where the count is number lanes in
+     * The values are of type sai_s32_list_t where the count is number lanes in
      * a port and the list specifies list of values to be applied to each lane.
      *
-     * @type sai_u32_list_t
+     * @type sai_s32_list_t
      * @flags CREATE_ONLY
      * @default internal
      */
@@ -2683,10 +3072,10 @@ typedef enum _sai_port_serdes_attr_t
      * @brief Port serdes control TX FIR MAIN filter
      *
      * List of port serdes TX fir maincursor tap-filter values.
-     * The values are of type sai_u32_list_t where the count is number lanes in
+     * The values are of type sai_s32_list_t where the count is number lanes in
      * a port and the list specifies list of values to be applied to each lane.
      *
-     * @type sai_u32_list_t
+     * @type sai_s32_list_t
      * @flags CREATE_ONLY
      * @default internal
      */
@@ -2696,10 +3085,10 @@ typedef enum _sai_port_serdes_attr_t
      * @brief Port serdes control TX FIR POST1 filter
      *
      * List of port serdes TX fir postcursor1 tap-filter values.
-     * The values are of type sai_u32_list_t where the count is number lanes in
+     * The values are of type sai_s32_list_t where the count is number lanes in
      * a port and the list specifies list of values to be applied to each lane.
      *
-     * @type sai_u32_list_t
+     * @type sai_s32_list_t
      * @flags CREATE_ONLY
      * @default internal
      */
@@ -2709,10 +3098,10 @@ typedef enum _sai_port_serdes_attr_t
      * @brief Port serdes control TX FIR POST2 filter
      *
      * List of port serdes TX fir postcursor2 tap-filter values.
-     * The values are of type sai_u32_list_t where the count is number lanes in
+     * The values are of type sai_s32_list_t where the count is number lanes in
      * a port and the list specifies list of values to be applied to each lane.
      *
-     * @type sai_u32_list_t
+     * @type sai_s32_list_t
      * @flags CREATE_ONLY
      * @default internal
      */
@@ -2722,10 +3111,10 @@ typedef enum _sai_port_serdes_attr_t
      * @brief Port serdes control TX FIR POST3 filter
      *
      * List of port serdes TX fir postcursor3 tap-filter values.
-     * The values are of type sai_u32_list_t where the count is number lanes in
+     * The values are of type sai_s32_list_t where the count is number lanes in
      * a port and the list specifies list of values to be applied to each lane.
      *
-     * @type sai_u32_list_t
+     * @type sai_s32_list_t
      * @flags CREATE_ONLY
      * @default internal
      */
@@ -2735,10 +3124,10 @@ typedef enum _sai_port_serdes_attr_t
      * @brief Port serdes control TX FIR attenuation
      *
      * List of port serdes TX fir attn values.
-     * The values are of type sai_u32_list_t where the count is number lanes in
+     * The values are of type sai_s32_list_t where the count is number lanes in
      * a port and the list specifies list of values to be applied to each lane.
      *
-     * @type sai_u32_list_t
+     * @type sai_s32_list_t
      * @flags CREATE_ONLY
      * @default internal
      */
@@ -2836,6 +3225,37 @@ typedef enum _sai_port_connector_attr_t
      * @objects SAI_OBJECT_TYPE_PORT
      */
     SAI_PORT_CONNECTOR_ATTR_LINE_SIDE_PORT_ID,
+
+    /**
+     * @brief System Side Port ID
+     *
+     * @type sai_object_id_t
+     * @flags CREATE_ONLY
+     * @objects SAI_OBJECT_TYPE_PORT
+     * @allownull true
+     * @default SAI_NULL_OBJECT_ID
+     */
+    SAI_PORT_CONNECTOR_ATTR_SYSTEM_SIDE_FAILOVER_PORT_ID,
+
+    /**
+     * @brief Line Side Port ID
+     *
+     * @type sai_object_id_t
+     * @flags CREATE_ONLY
+     * @objects SAI_OBJECT_TYPE_PORT
+     * @allownull true
+     * @default SAI_NULL_OBJECT_ID
+     */
+    SAI_PORT_CONNECTOR_ATTR_LINE_SIDE_FAILOVER_PORT_ID,
+
+    /**
+     * @brief Configure the failover mode on port
+     *
+     * @type sai_port_connector_failover_mode_t
+     * @flags CREATE_AND_SET
+     * @default SAI_PORT_CONNECTOR_FAILOVER_MODE_DISABLE
+     */
+    SAI_PORT_CONNECTOR_ATTR_FAILOVER_MODE,
 
     /**
      * @brief End of attributes
