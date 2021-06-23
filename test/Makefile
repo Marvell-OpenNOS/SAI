@@ -15,7 +15,13 @@
 #    assistance with these files: Intel Corporation, Mellanox Technologies Ltd,
 #    Dell Products, L.P., Facebook, Inc
 #
-CXX = g++
+
+ifeq ($(CROSS_BUILD_ENVIRON),y)
+CXX=$(CROSS_CXX)
+else
+CXX=g++
+endif
+
 LIBS = -lpthread 
 LDIR = ./lib
 

@@ -68,6 +68,14 @@ $(foreach bin,$(BINS),$(if $(shell which $(bin)),,$(error "Missing $(bin) in PAT
 
 CFLAGS += -I../inc -I../experimental $(WARNINGS)
 
+ifeq ($(CROSS_BUILD_ENVIRON),y)
+CC=$(CROSS_CC)
+CXX=$(CROSS_CXX)
+else
+CC=gcc
+CXX=g++
+endif
+
 DEPS = $(wildcard ../inc/*.h) $(wildcard ../experimental/*.h)
 XMLDEPS = $(wildcard xml/*.xml)
 
@@ -83,7 +91,7 @@ all: toolsversions saisanitycheck saimetadatatest saiserializetest saidepgraph.s
 
 toolsversions:
 	@make -v | grep -i make
-	@gcc --version | grep gcc
+	@$(CC) --version | grep gcc
 	@perl --version | grep version
 	@aspell --version
 	@dot -V
@@ -104,22 +112,22 @@ saimetadatatest.c saimetadata.c saimetadata.h: xml $(XMLDEPS) parse.pl $(CONSTHE
 HEADERS = saimetadata.h $(CONSTHEADERS)
 
 %.o: %.c $(HEADERS)
-	gcc -c -o $@ $< $(CFLAGS)
+	$(CC) -c -o $@ $< $(CFLAGS)
 
 %.o: %.cpp $(HEADERS)
-	gcc -c -o $@ $< $(CFLAGS)
+	$(CC) -c -o $@ $< $(CFLAGS)
 
 saisanitycheck: saisanitycheck.o $(OBJ)
-	gcc -o $@ $^
+	$(CC) -o $@ $^
 
 saimetadatatest: saimetadatatest.o $(OBJ)
-	gcc -o $@ $^
+	$(CC) -o $@ $^
 
 saiserializetest: saiserializetest.o $(OBJ)
-	gcc -o $@ $^
+	$(CC) -o $@ $^
 
 saidepgraphgen: saidepgraphgen.o $(OBJ)
-	g++ -o $@ $^
+	$(CXX) -o $@ $^
 
 %.o.symbols: %.o
 	nm $^ | ./checksymbols.pl

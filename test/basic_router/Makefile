@@ -21,7 +21,12 @@
 
 #Broadcom, Mellonox, Barefoot
 
-CXX = g++
+ifeq ($(CROSS_BUILD_ENVIRON),y)
+CXX=$(CROSS_CXX)
+else
+CXX=g++
+endif
+
 LIBS = -lpthread -lsai
 SAI_IDIR = /usr/include/sai
 
