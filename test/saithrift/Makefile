@@ -1,4 +1,9 @@
+ifeq ($(CROSS_BUILD_ENVIRON),y)
+CXX=$(CROSS_CXX)
+else
 CXX=g++
+endif
+
 SAI_PREFIX = /usr
 SAI_HEADER_DIR ?= $(SAI_PREFIX)/include/sai
 SAI_HEADERS = $(SAI_HEADER_DIR)/sai*.h
