@@ -69,11 +69,11 @@ $(foreach bin,$(BINS),$(if $(shell which $(bin)),,$(error "Missing $(bin) in PAT
 CFLAGS += -I../inc -I../experimental $(WARNINGS)
 
 ifeq ($(CROSS_BUILD_ENVIRON),y)
-CC=$(CROSS_CC)
-CXX=$(CROSS_CXX)
+    CC=$(CROSS_CC)
+    CXX=$(CROSS_CXX)
 else
-CC=gcc
-CXX=g++
+    CC=gcc
+    CXX=g++
 endif
 
 DEPS = $(wildcard ../inc/*.h) $(wildcard ../experimental/*.h)

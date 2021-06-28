@@ -56,11 +56,11 @@ EXEC_ALL = $(BDIR)/$(vr_EXEC) $(BDIR)/$(rif_EXEC) $(BDIR)/$(nh_EXEC) $(BDIR)/$(n
 
 # what to use for compiling
 ifeq ($(CROSS_BUILD_ENVIRON),y)
-CXX=$(CROSS_CXX) 
-AR=$(CROSS_AR)
+    CXX=$(CROSS_CXX) 
+    AR=$(CROSS_AR)
 else
-CXX=g++
-AR=ar
+    CXX=g++
+    AR=ar
 endif
 
 # include dir for unit-tests

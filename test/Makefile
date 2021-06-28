@@ -17,9 +17,9 @@
 #
 
 ifeq ($(CROSS_BUILD_ENVIRON),y)
-CXX=$(CROSS_CXX)
+    CXX=$(CROSS_CXX)
 else
-CXX=g++
+    CXX=g++
 endif
 
 LIBS = -lpthread 
